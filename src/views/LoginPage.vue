@@ -1,17 +1,16 @@
 <template>
   <div>
     <section class="container">
-      <b-collapse aria-id="contentIdForA11y2" class="panel" animation="slide">
         <p class="title">Login</p>
         <div>
-          <button class="btn btn-google" @click="loginGoogle()">Login con Google</button>
+          <button class="btn btn-google" @click="loginGoogle()"><i class="customIcon fab fa-google"></i> Login con Google</button>
         </div>
         <div>
-          <button class="btn btn-facebook">Login con Facebook</button>
+          <button class="btn btn-facebook"><i class="customIcon fab fa-facebook-f"></i> Login con Facebook</button>
         </div>
 
-        <div class="card">
-          <div class="panel-block">
+        <div class="form">
+          <div >
             <form>
               <label name="Email" class="text">Email</label>
               <input
@@ -36,7 +35,7 @@
             </form>
           </div>
         </div>
-      </b-collapse>
+
     </section>
   </div>
 </template>
@@ -111,12 +110,12 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 .container {
-  width: 700px;
-  padding: 60px;
+  width: 100%;
+  margin-top: 60px;
+  padding: 0px;
 }
-
 .btn {
   font-family: inherit;
   text-align: center;
@@ -148,6 +147,9 @@ export default {
   width: 180px;
   margin-top: 20px;
 }
+.customIcon{
+  margin-right: 8px;
+}
 
 .title {
   font-family: Raleway, sans-serif;
@@ -159,7 +161,7 @@ export default {
   line-height: 1.125;
 }
 
-.card {
+.form {
   display: flex;
   justify-content: center;
 }
@@ -194,4 +196,13 @@ export default {
 .text2 {
   margin-bottom: 20px;
 }
+
+@media (min-width: 1024px) {
+.container {
+  width: 700px;
+   border-radius: 6px;
+    box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);
+}
+}
+
 </style>

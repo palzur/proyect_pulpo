@@ -1,9 +1,8 @@
 <template>
   <div>
     <section class="container">
-      <b-collapse aria-id="contentIdForA11y2" class="panel" animation="slide">
-        <p class="title">Registro con Email</p>
-        <div class="card">
+        <p class="title">Registro con Email <i class="far fa-smile-wink"></i></p>
+        <div class="form">
           <div class="panel-block">
             <form>
               <label name="nombre" class="text">Nombre</label>
@@ -49,7 +48,6 @@
             </form>
           </div>
         </div>
-      </b-collapse>
     </section>
   </div>
 </template>
@@ -140,10 +138,11 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 .container {
-  width: 700px;
-  padding: 60px;
+  width: 100%;
+  margin-top: 60px;
+  padding: 0px;
 }
 
 .btn3-1 {
@@ -187,7 +186,7 @@ export default {
   line-height: 1.125;
 }
 
-.card {
+.form {
   display: flex;
   justify-content: center;
 }
@@ -220,5 +219,13 @@ export default {
   line-height: 16px;
   font-weight: 700;
   color: rgb(159, 170, 187);
+}
+
+@media (min-width: 1024px) {
+.container {
+  width: 700px;
+   border-radius: 6px;
+    box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);
+}
 }
 </style>
