@@ -10,7 +10,7 @@
           <button class="btn btn-facebook">Registro con Facebook</button>
         </div>
         <div>
-          <button class="btn btn-email">Registro con Email</button>
+          <button class="btn btn-email" @click="goToRegisterEmail()">Registro con Email</button>
         </div>
         <p class="text">
           Al registrarme acepto los Términos y Condiciones de Pulpo
@@ -23,6 +23,11 @@
 <script>
 export default {
   name: "Register",
+  methods:{
+    goToRegisterEmail(){
+      this.$router.push({name: "RegisterEmail"});
+    }
+  }
 };
 </script>
 

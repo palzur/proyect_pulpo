@@ -1,5 +1,6 @@
-import * as Firebase from "firebase/app";
-// import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail} from "firebase/auth";
+//importamos la dependencia de firebase (v8)
+import Firebase from "firebase";
+import firebaseProvider from "firebase/app";
 
 const firebaseConfig = {
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -12,9 +13,9 @@ const firebaseConfig = {
   measurementId: "${config.measurementId}"
 };
 
-const firebaseApp = Firebase.initializeApp(firebaseConfig)
+//inicializamos la librería con la configuración del proyecto
+const firebaseApp = Firebase.initializeApp(firebaseConfig);
 
+// exportamos los módulos que utilizaremos
 export const Auth = firebaseApp.auth()
-export const Storage = firebaseApp.storage()
-export const Database = firebaseApp.firestore()
-export const TasksRef = Database.collection('tasks')
+export const Provider= new firebaseProvider.auth.GoogleAuthProvider();

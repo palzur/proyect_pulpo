@@ -4,8 +4,7 @@
       <b-collapse aria-id="contentIdForA11y2" class="panel" animation="slide">
         <p class="title">Login</p>
         <div>
-          <button class="btn btn-google">Login con Google
-          </button>
+          <button class="btn btn-google" @click="loginGoogle()">Login con Google</button>
         </div>
         <div>
           <button class="btn btn-facebook">Login con Facebook</button>
@@ -13,21 +12,28 @@
 
         <div class="card">
           <div class="panel-block">
-            <section>
+            <form>
               <label name="Email" class="text">Email</label>
-              <input class="inputText" type="email" value="" maxlength="30" />
+              <input
+                class="inputText"
+                type="email"
+                v-model="user.email"
+                maxlength="30"
+              />
 
               <label name="Contraseña" class="text">Contraseña</label>
               <input
                 class="inputText"
                 type="password"
-                value=""
+                v-model="user.password"
                 maxlength="30"
               />
-              <button class="btn btn-login">Login</button>
+              <button class="btn btn-login" @click.prevent="login(user)">Login</button>
               <p class="text">¿Has olvidado tu contraseña?</p>
-              <p class="text text2">¿Aún no tienes cuenta? Registrate</p>
-            </section>
+              <p class="text text2">
+                ¿Aún no tienes cuenta? <a href="/register">Regístrate</a>
+              </p>
+            </form>
           </div>
         </div>
       </b-collapse>
@@ -36,8 +42,71 @@
 </template>
 
 <script>
+import { ToastProgrammatic as Toast } from "buefy";
+import { Provider, Auth } from "@/modules/firebase"; 
 export default {
   name: "Login",
+  data() {
+    return {
+      user: {
+        email: "",
+        password: "",
+      },
+    };
+  },
+
+  methods: {
+    async login(user){
+      if(this.validarDatos(user)){
+        try{
+          const response= await Auth.signInWithEmailAndPassword(user.email, user.password);
+          const session = {
+            token: response.user.Aa,
+            email: response.user.email
+          }
+          sessionStorage.setItem("session", JSON.stringify(session));
+          this.goToHome();
+        }
+        catch(error){
+          if(error.code=="auth/user-not-found"){
+            this.mostrarError("El usuario no existe.");
+          }
+          else if(error.code=="auth/wrong-password"){
+            this.mostrarError("Contraseña incorrecta.");
+          }
+        }
+      };
+
+    },
+    async loginGoogle(){
+      const response= await Auth.signInWithPopup(Provider);
+      console.log(response);
+    },
+    validarDatos(user) {
+      if (user.email == "") {
+        this.mostrarError("Debe introducir email.");
+        return false;
+      }
+      if (user.password == "") {
+        this.mostrarError("La contraseña es obligatoria.");
+        return false;
+      }
+      return true;
+    },
+    mostrarError(mensaje) {
+      Toast.open({
+        duration: 5000,
+        message: mensaje,
+        position: "is-bottom",
+        type: "is-danger",
+      });
+    },
+  goToHome(){
+    this.$router.push({name: "Home"});
+  }
+
+    
+  },
 };
 </script>
 
