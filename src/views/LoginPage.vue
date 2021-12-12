@@ -30,7 +30,7 @@
               <button class="btn btn-login" @click.prevent="login(user)">Login</button>
               <p class="text">¿Has olvidado tu contraseña?</p>
               <p class="text text2">
-                ¿Aún no tienes cuenta? <a href="/register">Regístrate</a>
+                ¿Aún no tienes cuenta? <router-link to="/register">Regístrate</router-link>
               </p>
             </form>
           </div>
@@ -72,6 +72,9 @@ export default {
           }
           else if(error.code=="auth/wrong-password"){
             this.mostrarError("Contraseña incorrecta.");
+          }
+          else if(error.code=="auth/invalid-email"){
+            this.mostrarError("El email debe estar bien formateado.");
           }
         }
       };

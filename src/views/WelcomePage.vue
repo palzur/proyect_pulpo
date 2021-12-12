@@ -1,7 +1,7 @@
 <template>
   <div>
-    <main>
-      <section class="fondo"></section>
+    <section class="fondo"></section>
+    <header>
       <b-navbar class="mainNavbar">
         <template #brand>
           <b-navbar-item tag="router-link" :to="{ path: '/' }">
@@ -11,13 +11,25 @@
         <template #end>
           <b-navbar-item tag="div">
             <div class="actions">
-              <a href="/login"><button class="btn btn-login">Login</button></a>
-              <a href="/register"><button class="btn btn-register">Regístrate</button></a>
+              <router-link to="/login"
+                ><button class="btn btn-login">Login</button></router-link
+              >
+              <router-link to="/register"
+                ><button class="btn btn-register">
+                  Regístrate
+                </button></router-link
+              >
             </div>
           </b-navbar-item>
         </template>
       </b-navbar>
-    </main>
+    </header>
+    <section class="first-section">
+      <article>
+        <p>Ahorra en tus gastos!!</p>
+      </article>
+    </section>
+    <main></main>
   </div>
 </template>
 
@@ -26,8 +38,17 @@ export default {};
 </script>
 
 <style scoped>
-main {
-  background-color: white;
+.first-section {
+  position: relative;
+  color: white;
+}
+
+.first-section p {
+  font-family: Raleway, sans-serif;
+  font-weight: 900;
+  font-size: 48px;
+  line-height: 56px;
+  color: rgb(245, 250, 255);
 }
 
 .fondo {
@@ -71,6 +92,11 @@ main {
 
 .mainNavbar a {
   color: white;
+  text-decoration: none;
+}
+
+.mainNavbar a:hover {
+  color: #e2d1c0;
 }
 
 .btn-login {
@@ -83,14 +109,13 @@ main {
   border: 4px solid rgb(0, 120, 255);
   padding: 8px;
 }
-.navbar-burger{
+.navbar-burger {
   color: #ffffff !important;
 }
 
-.first-section{
+.first-section {
   display: flex;
 }
-
 
 @media (min-width: 1024px) {
   .btn {
@@ -105,7 +130,4 @@ main {
     padding: 8px;
   }
 }
-
-
-
 </style>

@@ -76,7 +76,6 @@ export default {
 }
 
 .title {
-  font-family: Raleway, sans-serif;
   color: rgb(67, 72, 80);
   padding-top: 20px;
   line-height: 21px;

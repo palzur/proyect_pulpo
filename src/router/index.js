@@ -5,6 +5,8 @@ import HomePage from '../views/HomePage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 import RegisterEmailPage from '../views/RegisterEmailPage.vue'
+import CreateGroupPage from '../views/CreateGroupPage.vue'
+import CreateGroupNetflixPage from '../views/CreateGroupNetflixPage.vue'
 
 
 
@@ -71,7 +73,39 @@ const routes = [
       next();
     }
   
-  }
+  },
+  {
+    path: '/create/group',
+    name: 'CreateGroup',
+    component: CreateGroupPage,
+    beforeEnter:(to, from, next) => {
+      const session = sessionStorage.getItem('session');
+      if(session==null){
+        next({ name: 'Welcome' });
+      }
+      next();
+    }
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    beforeEnter:(to, from, next) => {
+      sessionStorage.removeItem('session');
+      next({ name: 'Welcome' });
+    }
+  },
+  {
+    path: '/create/group/netflix',
+    name: 'CreateGroupNetflix',
+    component: CreateGroupNetflixPage,
+    beforeEnter:(to, from, next) => {
+      const session = sessionStorage.getItem('session');
+      if(session==null){
+        next({ name: 'Welcome' });
+      }
+      next();
+    }
+  },
 ]
 
 const router = new VueRouter({
