@@ -20,7 +20,8 @@
               <router-link to="/logout"
                 ><button class="btn btn-cerrar">
                   Cerrar Session
-                </button></router-link>
+                </button></router-link
+              >
             </div>
           </b-navbar-item>
         </template>
@@ -29,10 +30,10 @@
 
     <main class="main">
       <section class="section">
-        <h1>Hola {{session.name}}, estos son tus grupos creados...</h1>
+        <h1>Hola {{ session.name }}, estos son tus grupos creados...</h1>
         <p>¿Quiéres unirte hoy a algo especial?</p>
         <p>¿¡Es tu momento!?</p>
-        <p> <i class="fas fa-search icon-search"></i></p>
+        <p><i class="fas fa-search icon-search"></i></p>
         <router-link to="/groups/page"
           ><button class="btn btn-serch-more-groups">
             Buscar grupos
@@ -41,14 +42,30 @@
       </section>
 
       <section class="cardMain">
-        <template v-for="group in groups" v-if="session.email == group.admin.email">
+        <template v-for="group in groups">
           <card-service
+            v-if="session.email == group.admin.email"
             :join="false"
             :group="group"
             class="cardChild"
             :key="group.id"
           />
         </template>
+      </section>
+
+      <section class="second-section" v-if="pertenezcoGrupos(group)">
+        <h1>Estos son los grupos de los que eres participante...</h1>
+        <section class="cardMain">
+          <template v-for="group in groups">
+            <card-service
+              v-if="pertenezcoGrupo(group)"
+              :join="false"
+              :group="group"
+              class="cardChild"
+              :key="group.id"
+            />
+          </template>
+        </section>
       </section>
     </main>
   </div>
@@ -66,7 +83,7 @@ export default {
   data() {
     return {
       groups: [],
-      session: JSON.parse(sessionStorage.getItem('session'))
+      session: JSON.parse(sessionStorage.getItem("session")),
     };
   },
   firestore: {
@@ -75,6 +92,30 @@ export default {
   methods: {
     crearGrupo() {
       this.$router.push({ name: "CreateGroup" });
+    },
+    pertenezcoGrupo(group) {
+      const email = this.session.email;
+
+      if (group.admin.email == email) {
+        return false;
+      }
+      return group.people.some(function (person) {
+        return person.email == email;
+      });
+    },
+    pertenezcoGrupos() {
+      const email = this.session.email;
+      if (this.groups == null) {
+        return false;
+      }
+      return this.groups.some(function (group) {
+        if (group.admin.email == email) {
+          return false;
+        }
+        return group.people.some(function (person) {
+          return person.email == email;
+        });
+      });
     },
   },
 };
@@ -115,6 +156,13 @@ export default {
   font-size: 80px;
 }
 
+.second-section h1 {
+  font-family: Readex Pro, sans-serif;
+  font-weight: 700;
+  font-size: 23px;
+  padding: 20px;
+  line-height: 30px;
+}
 .section h1 {
   font-family: Readex Pro, sans-serif;
   font-weight: 700;
@@ -192,6 +240,19 @@ main {
   border: 4px solid rgb(0, 120, 255);
   padding: 8px;
 }
+
+.btn-serch-more-groups {
+  margin-top: 20px;
+  width: 80%;
+  background: linear-gradient(
+    180deg,
+    rgba(253, 64, 133, 1) 0%,
+    rgba(254, 106, 136, 1) 62%,
+    rgba(255, 159, 141, 1) 100%
+  );
+  height: 50px;
+  font-size: 18px;
+}
 .navbar-burger {
   color: #ffffff !important;
 }
@@ -215,11 +276,37 @@ main {
     border: 4px solid rgb(0, 120, 255);
     padding: 8px;
   }
+
+  .btn-serch-more-groups {
+    margin-top: 50px;
+    width: 30%;
+    background: linear-gradient(
+      180deg,
+      rgba(253, 64, 133, 1) 0%,
+      rgba(254, 106, 136, 1) 62%,
+      rgba(255, 159, 141, 1) 100%
+    );
+    height: 50px;
+    font-size: 20px;
+  }
 }
 
 @media (min-width: 1900px) {
   .cardChild {
     width: 26%;
+  }
+  .btn-serch-more-groups {
+    margin-top: 50px;
+    width: 27%;
+    background: linear-gradient(
+      180deg,
+      rgba(253, 64, 133, 1) 0%,
+      rgba(254, 106, 136, 1) 62%,
+      rgba(255, 159, 141, 1) 100%
+    );
+
+    height: 50px;
+    font-size: 20px;
   }
 }
 </style>

@@ -29,13 +29,16 @@
     </header>
     <main>
       <section class="section">
-        <h1>Bienvenida {{ session.name }}, estos son los grupos disponibles a los que te puedes unir. </h1>
+        <h1>
+          Bienvenida {{ session.name }}, estos son los grupos disponibles a los
+          que te puedes unir.
+        </h1>
         <p>¿Te sumas a nosotros?</p>
         <p><i class="fas fa-bomb icon-bomb"></i></p>
       </section>
       <section class="cardMain">
-        <template v-for="group in groups" v-if="session.email !== group.admin.email">
-          <card-service
+        <template v-for="group in groups">
+          <card-service v-if="pertenezcoGrupo(group)"
             :join="true"
             :group="group"
             class="cardChild"
@@ -64,6 +67,17 @@ export default {
   },
   firestore: {
     groups: groups,
+  },
+  methods: {
+    pertenezcoGrupo(group) {
+      const email = this.session.email;
+      if (group.admin.email == email) {
+        return false;
+      }
+      return !group.people.some(function (person) {
+        return person.email == email;
+      });
+    },
   },
 };
 </script>

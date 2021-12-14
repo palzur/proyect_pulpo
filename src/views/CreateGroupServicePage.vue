@@ -20,7 +20,7 @@
     </b-navbar>
 
     <div class="container">
-      <img :src="currentService.image" alt="" />
+      <img class="imagenSuscripcion" :src="currentService.image" alt="" />
       <h1>¿Con cuántas personas quieres compartir tu cuenta de Netflix?</h1>
       <div class="marcador">
         <b-field>
@@ -75,12 +75,12 @@ export default {
         snapshot.docs.map((item) => (this.currentService = item.data()));
       });
     },
-    obtenerUsuarioSesion(){
-      const session= JSON.parse(sessionStorage.getItem("session"));
+    obtenerUsuarioSesion() {
+      const session = JSON.parse(sessionStorage.getItem("session"));
       return session;
     },
     async createGroup() {
-      const session= this.obtenerUsuarioSesion();
+      const session = this.obtenerUsuarioSesion();
       const group = {
         numberPerson: this.qtyPerson,
         service: this.currentService,
@@ -88,12 +88,12 @@ export default {
         admin: {
           name: session.name,
           surname: session.surname,
-          email: session.email
-        }
+          email: session.email,
+        },
       };
 
-      const result= await groups.add(group);
-      this.$router.push({path: '/home'});
+      const result = await groups.add(group);
+      this.$router.push({ path: "/home" });
     },
   },
 };
@@ -190,5 +190,38 @@ export default {
 .miIcon {
   font-size: 30px;
   margin-bottom: 10px;
+}
+
+@media (min-width: 770px) {
+  .btn-create-group {
+    width: 30%;
+  }
+   .marcador {
+    width: 60%;
+  }
+  .container img {
+    width: 45%;
+  }
+ 
+}
+@media (min-width: 1200px) {
+
+  .container img {
+    width: 30%;
+  }
+ 
+}
+
+
+@media (min-width: 1500px) {
+  .btn-create-group {
+    width: 30%;
+  }
+  .marcador {
+    width: 50%;
+  }
+  .container img {
+    width: 40%;
+  }
 }
 </style>

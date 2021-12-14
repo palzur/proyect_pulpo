@@ -42,7 +42,13 @@
   export default{
     name:'ChangePassword',
     data(){
-      return{}
+      return{
+        user: {
+          email: "",
+          password: "",
+          confirmPassword: ""
+        }
+      }
     }
   }
 

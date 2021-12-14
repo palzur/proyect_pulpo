@@ -138,13 +138,7 @@ const routes = [
     path: '/change/password',
     name: 'ChangePassword',
     component: ChangePassword,
-    beforeEnter:(to, from, next) => {
-      const session = sessionStorage.getItem('session');
-      if(session==null){
-        next({ name: 'Login'});
-      }
-      next();
-    }
+    
   },
 ]
 

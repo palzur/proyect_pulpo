@@ -34,7 +34,7 @@
             <button class="btn btn-login" @click.prevent="login(user)">
               Login
             </button>
-            <p class="text">¿Has olvidado tu contraseña?</p>
+            <router-link to="/change/password"><p class="text">¿Has olvidado tu contraseña?</p></router-link>
             <p class="text text2">
               ¿Aún no tienes cuenta?
               <router-link to="/register">Regístrate</router-link>
