@@ -71,6 +71,9 @@ export default {
     };
   },
   methods: {
+    paginaHome(){
+      this.$router.push({path: '/home'});
+    },
     async register(user) {
       if (this.validarDatos(user)) {
         try {
@@ -79,13 +82,17 @@ export default {
             user.password
           );
           const userToSave = {
+            token: response.user.Aa,
             name: user.name,
             surname: user.surname,
             email: user.email,
           };
-          response = await users.add(userToSave);
-
+          console.log(response.user.uid);
+          const responseTwo = await users.doc(response.user.uid).set(userToSave);
           this.mostrarInfo("¡Usuario creado correctamente!");
+          sessionStorage.setItem("session",JSON.stringify(userToSave));
+          this.paginaHome();
+          
         } catch (error) {
           if (error.code == "auth/email-already-in-use") {
             this.mostrarError("El email ya está registrado.");

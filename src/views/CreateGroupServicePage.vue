@@ -57,7 +57,7 @@ import { services } from "@/modules/firebase";
 import { groups } from "@/modules/firebase";
 
 export default {
-  name: "CreateGroupNetflixPage",
+  name: "CreateGroupServicePage",
   data() {
     return {
       currentService: null,
@@ -84,7 +84,7 @@ export default {
       const group = {
         numberPerson: this.qtyPerson,
         service: this.currentService,
-        people: {},
+        people: [],
         admin: {
           name: session.name,
           surname: session.surname,
@@ -93,6 +93,7 @@ export default {
       };
 
       const result= await groups.add(group);
+      this.$router.push({path: '/home'});
     },
   },
 };

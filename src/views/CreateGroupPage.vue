@@ -2,7 +2,7 @@
   <div>
     <b-navbar class="mainNavbar card">
       <template #brand>
-        <b-navbar-item tag="router-link" :to="{ path: '/home' }">
+        <b-navbar-item class="logoPrincipal" tag="router-link" :to="{ path: '/home' }">
           ShareXpenses
         </b-navbar-item>
       </template>
@@ -63,12 +63,21 @@ export default {
 </script>
 
 <style scoped>
+.logoPrincipal {
+  font-size: 17px;
+  font-family: Readex Pro, sans-serif;
+  font-weight: bold;
+}
 img {
   width: 90px;
 }
 section h2 {
   font-weight: bold;
   margin-bottom: 14px;
+}
+.suscripciones h2{
+  font-size: 17px;
+  padding: 8px;
 }
 
 .firstCard {

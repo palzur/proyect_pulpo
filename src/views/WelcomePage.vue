@@ -60,10 +60,16 @@
 
       <section class="cardMain">
         <template v-for="group in groups">
-          <card-service :group="group" class="cardChild" :key="group.id" />
+          <card-service :join="true" :group="group" class="cardChild" :key="group.id" />
         </template>
       </section>
     </main>
+
+    <footer class="footer-bienvenida">
+        <p>
+          ¡Gracias por visitar ShareXpenses!
+        </p>
+    </footer>
   </div>
 </template>
 
@@ -87,6 +93,23 @@ export default {
 </script>
 
 <style scoped>
+
+.footer-bienvenida{
+  margin-top: 50px;
+  border-bottom-right-radius: 0%;
+  border-bottom-left-radius: 0%;
+  background: linear-gradient(rgb(0, 120, 255) 0%, rgb(0, 172, 255) 100%);
+  position: relative;
+  width: 100%;
+  min-height: 50px;
+}
+.footer-bienvenida p{
+  font-size: 17px;
+  padding: 10px;
+  color: white;
+  font-weight: bold;
+}
+
 .cardHeader {
   display: flex;
   width: 100%;

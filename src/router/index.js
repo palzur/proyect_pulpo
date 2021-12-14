@@ -7,6 +7,9 @@ import RegisterPage from '../views/RegisterPage.vue'
 import RegisterEmailPage from '../views/RegisterEmailPage.vue'
 import CreateGroupPage from '../views/CreateGroupPage.vue'
 import CreateGroupServicePage from '../views/CreateGroupServicePage.vue'
+import JoinGroupPage from '../views/JoinGroupPage.vue'
+import GroupsPage from '../views/GroupsPage.vue'
+import ChangePassword from '../views/ChangePassword.vue'
 
 
 
@@ -102,6 +105,43 @@ const routes = [
       const session = sessionStorage.getItem('session');
       if(session==null){
         next({ name: 'Welcome' });
+      }
+      next();
+    }
+  },
+
+  {
+    path: '/join/group/:id',
+    name: 'JoinGroupPage',
+    component: JoinGroupPage,
+    beforeEnter:(to, from, next) => {
+      const session = sessionStorage.getItem('session');
+      if(session==null){
+        next({ name: 'Login' });
+      }
+      next();
+    }
+  },
+  {
+    path: '/groups/page',
+    name: 'GroupsPage',
+    component: GroupsPage,
+    beforeEnter:(to, from, next) => {
+      const session = sessionStorage.getItem('session');
+      if(session==null){
+        next({ name: 'Login'});
+      }
+      next();
+    }
+  },
+  {
+    path: '/change/password',
+    name: 'ChangePassword',
+    component: ChangePassword,
+    beforeEnter:(to, from, next) => {
+      const session = sessionStorage.getItem('session');
+      if(session==null){
+        next({ name: 'Login'});
       }
       next();
     }

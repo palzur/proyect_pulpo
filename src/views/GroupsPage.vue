@@ -14,36 +14,29 @@
         <template #end>
           <b-navbar-item tag="div">
             <div class="actions">
-              <button class="btn btn-crear-grupo" @click="crearGrupo()">
-                Crear grupo
-              </button>
+              <router-link to="/home"
+                ><button class="btn btn-volver">Volver</button></router-link
+              >
               <router-link to="/logout"
                 ><button class="btn btn-cerrar">
                   Cerrar Session
-                </button></router-link>
+                </button></router-link
+              >
             </div>
           </b-navbar-item>
         </template>
       </b-navbar>
     </header>
-
-    <main class="main">
+    <main>
       <section class="section">
-        <h1>Hola {{session.name}}, estos son tus grupos creados...</h1>
-        <p>¿Quiéres unirte hoy a algo especial?</p>
-        <p>¿¡Es tu momento!?</p>
-        <p> <i class="fas fa-search icon-search"></i></p>
-        <router-link to="/groups/page"
-          ><button class="btn btn-serch-more-groups">
-            Buscar grupos
-          </button></router-link
-        >
+        <h1>Bienvenida {{ session.name }}, estos son los grupos disponibles a los que te puedes unir. </h1>
+        <p>¿Te sumas a nosotros?</p>
+        <p><i class="fas fa-bomb icon-bomb"></i></p>
       </section>
-
       <section class="cardMain">
-        <template v-for="group in groups" v-if="session.email == group.admin.email">
+        <template v-for="group in groups" v-if="session.email !== group.admin.email">
           <card-service
-            :join="false"
+            :join="true"
             :group="group"
             class="cardChild"
             :key="group.id"
@@ -59,62 +52,41 @@ import CardService from "../components/CardService.vue";
 import { groups } from "@/modules/firebase";
 
 export default {
-  name: "Home",
+  name: "GroupsPage",
   components: {
     CardService,
   },
   data() {
     return {
       groups: [],
-      session: JSON.parse(sessionStorage.getItem('session'))
+      session: JSON.parse(sessionStorage.getItem("session")),
     };
   },
   firestore: {
     groups: groups,
   },
-  methods: {
-    crearGrupo() {
-      this.$router.push({ name: "CreateGroup" });
-    },
-  },
 };
 </script>
 
-<style scoped>
-.btn {
-  font-family: inherit;
-  text-align: center;
-  padding: 12px 24px;
-  color: rgb(245, 250, 255);
-  transition: all 250ms ease 0s;
-  position: relative;
-  width: 300px;
-  line-height: 1.2;
-  border-radius: 26px;
-  font-weight: 900;
-  border: none;
-  font-size: 16px;
-  height: 42px;
-  min-width: 160px;
-  margin-bottom: 15px;
-}
 
-.btn-serch-more-groups {
-  margin-top: 20px;
-  width: 60%;
-  background: linear-gradient(
-    180deg,
-    rgba(253, 64, 133, 1) 0%,
-    rgba(254, 106, 136, 1) 62%,
-    rgba(255, 159, 141, 1) 100%
-  );
-  height: 50px;
-  font-size: 20px;
+<style scoped>
+.mainNavbar {
+  transition-duration: 2s;
+  transition-timing-function: ease;
 }
-.icon-search {
+.icon-bomb {
   font-size: 80px;
 }
 
+.logoPrincipal {
+  font-size: 17px;
+  font-family: Readex Pro, sans-serif;
+  font-weight: bold;
+}
+.mainNavbar a {
+  color: #0078ff;
+  font-family: "Roboto", sans-serif;
+}
 .section h1 {
   font-family: Readex Pro, sans-serif;
   font-weight: 700;
@@ -127,28 +99,6 @@ export default {
   font-size: 19px;
   padding: 6px;
 }
-main {
-  background-color: white;
-}
-
-.cardChild {
-  width: 100%;
-}
-
-.cardMain {
-  width: 100%;
-  flex-direction: row;
-  flex-wrap: wrap;
-  display: flex;
-  justify-content: space-around;
-  padding: 20px;
-}
-
-.logoPrincipal {
-  font-size: 17px;
-  font-family: Readex Pro, sans-serif;
-  font-weight: bold;
-}
 .btn {
   font-family: inherit;
   text-align: center;
@@ -166,40 +116,28 @@ main {
   min-width: 160px;
   margin-bottom: 15px;
 }
-
-.mainNavbar {
-  transition-duration: 2s;
-  transition-timing-function: ease;
-}
-.is-active {
-  transition-timing-function: ease;
-}
-
-.mainNavbar a {
-  color: #0078ff;
-  font-family: "Readex Pro", sans-serif;
-  font-family: "Roboto", sans-serif;
-}
-
-.btn-crear-grupo {
-  background: linear-gradient(rgb(0, 120, 255) 0%, rgb(0, 172, 255) 100%);
-  color: white;
-}
-
 .btn-cerrar {
   color: rgb(0, 120, 255);
   background-color: white;
   border: 4px solid rgb(0, 120, 255);
   padding: 8px;
 }
-.navbar-burger {
-  color: #ffffff !important;
+.btn-volver {
+  background: linear-gradient(rgb(0, 120, 255) 0%, rgb(0, 172, 255) 100%);
+  color: white;
+}
+.cardChild {
+  width: 100%;
 }
 
-.first-section {
+.cardMain {
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
   display: flex;
+  justify-content: space-around;
+  padding: 20px;
 }
-
 @media (min-width: 1024px) {
   .cardChild {
     width: 30%;

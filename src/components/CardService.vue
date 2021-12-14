@@ -12,7 +12,7 @@
       </section>
       </div>
       <footer>
-      <router-link to="/login"
+      <router-link v-if="join" :to="{name: 'JoinGroupPage', params:{id:group.admin.name}}"
             ><button class="btn btn-unirt">Unirse</button></router-link>
       </footer>
     </article>
@@ -23,7 +23,8 @@
 export default{
   name: "CardService",
   props:{
-    group: Object
+    group: Object,
+    join: Boolean
   },
   data(){
     return{}
