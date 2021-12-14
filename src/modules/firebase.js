@@ -17,5 +17,10 @@ const firebaseConfig = {
 const firebaseApp = Firebase.initializeApp(firebaseConfig);
 
 // exportamos los módulos que utilizaremos
-export const Auth = firebaseApp.auth()
+export const Auth = firebaseApp.auth();
+export const Storage = firebaseApp.storage();
+export const Database = firebaseApp.firestore();
 export const Provider= new firebaseProvider.auth.GoogleAuthProvider();
+export const services= Database.collection('services');
+export const groups= Database.collection('groups');
+export const users= Database.collection('users');

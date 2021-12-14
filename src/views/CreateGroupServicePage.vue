@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="currentService != null">
     <b-navbar class="mainNavbar card">
       <template #brand>
         <b-navbar-item tag="router-link" :to="{ path: '/home' }">
@@ -20,46 +20,88 @@
     </b-navbar>
 
     <div class="container">
-      <img src="../assets/images/net-flix.png" alt="">
+      <img :src="currentService.image" alt="" />
       <h1>¿Con cuántas personas quieres compartir tu cuenta de Netflix?</h1>
       <div class="marcador">
         <b-field>
           <b-numberinput
             type="is-info"
             icon-pack="fas"
-            v-model="personas"
+            v-model="qtyPerson"
+            :max="currentService.maxPerson"
             min="1"
-            max="3"
           ></b-numberinput>
         </b-field>
       </div>
-      <p>Cobrarás <b>{{ personas * precioPorPersona }} €/mes</b></p>
-
+      <p>
+        Cobrarás <b>{{ currentService.pricePerson * qtyPerson }} €/mes</b>
+      </p>
+      <button class="btn btn-create-group" @click="createGroup()">
+        Crear grupo
+      </button>
       <div class="aviso">
         <i class="far fa-file-alt miIcon"></i>
         <h2>¿Con cuántas personas puedes compartir tu cuenta?</h2>
-        <p>Legalmente solo puedes compartir hasta un número máximo indicado arriba, por lo que si ya tienes gente usando el servicio no se puede exceder el límite.</p>
+        <p>
+          Legalmente solo puedes compartir hasta un número máximo indicado
+          arriba, por lo que si ya tienes gente usando el servicio no se puede
+          exceder el límite.
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { services } from "@/modules/firebase";
+import { groups } from "@/modules/firebase";
+
 export default {
   name: "CreateGroupNetflixPage",
   data() {
     return {
-      personas: 1,
-      precioPorPersona: 4.50,
+      currentService: null,
+      qtyPerson: 1,
     };
-  }
+  },
+  mounted() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      const name = this.$route.params.name;
+      const service = services.where("name", "==", name).get();
+      service.then((snapshot) => {
+        snapshot.docs.map((item) => (this.currentService = item.data()));
+      });
+    },
+    obtenerUsuarioSesion(){
+      const session= JSON.parse(sessionStorage.getItem("session"));
+      return session;
+    },
+    async createGroup() {
+      const session= this.obtenerUsuarioSesion();
+      const group = {
+        numberPerson: this.qtyPerson,
+        service: this.currentService,
+        people: {},
+        admin: {
+          name: session.name,
+          surname: session.surname,
+          email: session.email
+        }
+      };
+
+      const result= await groups.add(group);
+    },
+  },
 };
 </script>
 
 <style scoped>
 .marcador {
   width: 100%;
-  margin: 16px auto;
+  margin: 0px auto;
   padding: 30px;
 }
 
@@ -67,12 +109,18 @@ export default {
   justify-content: center;
   margin-top: 60px;
 }
-.container img{
+.container img {
   width: 60%;
-    margin-bottom: 16px;
+  margin-bottom: 16px;
 }
-.container h1{
+.container h1 {
   font-weight: bold;
+  padding: 13px;
+  font-size: 17px;
+}
+
+.container p {
+  font-size: 18px;
 }
 
 .mainNavbar {
@@ -110,8 +158,21 @@ export default {
   border: 4px solid rgb(0, 120, 255);
   padding: 8px;
 }
+.btn-create-group {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  width: 60%;
+  background: linear-gradient(
+    180deg,
+    rgba(28, 214, 106, 1) 32%,
+    rgba(62, 223, 132, 1) 60%,
+    rgba(118, 247, 172, 1) 100%
+  );
+  height: 50px;
+  font-size: 20px;
+}
 
-.aviso{
+.aviso {
   box-shadow: rgb(222 232 243) 0px 40px 50px -25px;
   border-radius: 40px;
   background: rgb(245, 250, 255);
@@ -120,10 +181,12 @@ export default {
   margin: 16px;
 }
 
-.aviso h2{
+.aviso h2 {
+  font-size: 17px;
   font-weight: bold;
+  margin-bottom: 10px;
 }
-.miIcon{
+.miIcon {
   font-size: 30px;
   margin-bottom: 10px;
 }

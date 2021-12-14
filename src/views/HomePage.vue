@@ -1,8 +1,9 @@
 <template>
   <div>
+    <header>
     <b-navbar class="mainNavbar card">
         <template #brand>
-          <b-navbar-item tag="router-link" :to="{ path: '/home' }">
+          <b-navbar-item class="logoPrincipal" tag="router-link" :to="{ path: '/home' }">
             ShareXpenses
           </b-navbar-item>
         </template>
@@ -15,10 +16,13 @@
           </b-navbar-item>
         </template>
       </b-navbar>
+      </header>
+   
   </div>
 </template>
 
 <script>
+
 
 export default {
   name: "Home",
@@ -40,7 +44,11 @@ main {
   background-color: white;
 }
 
-
+.logoPrincipal {
+  font-size: 17px;
+  font-family: Readex Pro, sans-serif;
+  font-weight: bold;
+}
 .btn {
   font-family: inherit;
   text-align: center;

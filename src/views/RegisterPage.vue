@@ -27,6 +27,8 @@
 </template>
 
 <script>
+
+import { users } from "@/modules/firebase";
 export default {
   name: "Register",
   methods: {

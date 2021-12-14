@@ -6,7 +6,7 @@ import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 import RegisterEmailPage from '../views/RegisterEmailPage.vue'
 import CreateGroupPage from '../views/CreateGroupPage.vue'
-import CreateGroupNetflixPage from '../views/CreateGroupNetflixPage.vue'
+import CreateGroupServicePage from '../views/CreateGroupServicePage.vue'
 
 
 
@@ -95,9 +95,9 @@ const routes = [
     }
   },
   {
-    path: '/create/group/netflix',
-    name: 'CreateGroupNetflix',
-    component: CreateGroupNetflixPage,
+    path: '/create/group/:name',
+    name: 'CreateGroupServicePage',
+    component: CreateGroupServicePage,
     beforeEnter:(to, from, next) => {
       const session = sessionStorage.getItem('session');
       if(session==null){

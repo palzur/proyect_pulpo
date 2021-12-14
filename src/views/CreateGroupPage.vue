@@ -30,15 +30,14 @@
         <article class="suscripciones">
           <h2>¿Qué plataforma quieres compartir?</h2>
           <div class="categorias">
-            <template v-for="categoria in categorias">
+            <template v-for="service in services">
               <router-link
                 class="categoria"
-                :to="categoria.route"
-                :key="categoria.image"
+                :to="{ name: 'CreateGroupServicePage', params:{name: service.name} }"
+                :key="service.name"
               >
-                <img :src="categoria.image" />
-                </router-link
-              >
+                <img :src="service.image" />
+              </router-link>
             </template>
           </div>
         </article>
@@ -48,37 +47,17 @@
 </template>
 
 <script scoped>
+import { services } from "@/modules/firebase";
+
 export default {
   name: "CreateGroup",
   data() {
     return {
-      categorias: [
-        {
-          image: require("../assets/images/net-flix.png"),
-          route: "/create/group/netflix",
-        },
-        {
-          image: require("../assets/images/disney.png"),
-          route: "/create/group/netflix",
-        },
-        {
-          image: require("../assets/images/spotify.png"),
-          route: "/create/group/netflix",
-        },
-        {
-          image: require("../assets/images/h-logo-bo.png"),
-          route: "/create/group/netflix",
-        },
-        {
-          image: require("../assets/images/fil-logo-min.png"),
-          route: "/create/group/netflix",
-        },
-        {
-          image: require("../assets/images/atres-logo-player.png"),
-          route: "/create/group/netflix",
-        },
-      ],
+      services: [],
     };
+  },
+  firestore: {
+    services: services,
   },
 };
 </script>

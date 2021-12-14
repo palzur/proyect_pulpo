@@ -1,48 +1,54 @@
 <template>
   <div>
     <section class="container">
-        <p class="title">Login</p>
+      <p class="title">Login</p>
+      <div>
+        <button class="btn btn-google" @click="loginGoogle()">
+          <i class="customIcon fab fa-google"></i> Login con Google
+        </button>
+      </div>
+      <div>
+        <button class="btn btn-facebook">
+          <i class="customIcon fab fa-facebook-f"></i> Login con Facebook
+        </button>
+      </div>
+
+      <div class="form">
         <div>
-          <button class="btn btn-google" @click="loginGoogle()"><i class="customIcon fab fa-google"></i> Login con Google</button>
-        </div>
-        <div>
-          <button class="btn btn-facebook"><i class="customIcon fab fa-facebook-f"></i> Login con Facebook</button>
-        </div>
+          <form>
+            <label name="Email" class="text">Email</label>
+            <input
+              class="inputText"
+              type="email"
+              v-model="user.email"
+              maxlength="30"
+            />
 
-        <div class="form">
-          <div >
-            <form>
-              <label name="Email" class="text">Email</label>
-              <input
-                class="inputText"
-                type="email"
-                v-model="user.email"
-                maxlength="30"
-              />
-
-              <label name="Contraseña" class="text">Contraseña</label>
-              <input
-                class="inputText"
-                type="password"
-                v-model="user.password"
-                maxlength="30"
-              />
-              <button class="btn btn-login" @click.prevent="login(user)">Login</button>
-              <p class="text">¿Has olvidado tu contraseña?</p>
-              <p class="text text2">
-                ¿Aún no tienes cuenta? <router-link to="/register">Regístrate</router-link>
-              </p>
-            </form>
-          </div>
+            <label name="Contraseña" class="text">Contraseña</label>
+            <input
+              class="inputText"
+              type="password"
+              v-model="user.password"
+              maxlength="30"
+            />
+            <button class="btn btn-login" @click.prevent="login(user)">
+              Login
+            </button>
+            <p class="text">¿Has olvidado tu contraseña?</p>
+            <p class="text text2">
+              ¿Aún no tienes cuenta?
+              <router-link to="/register">Regístrate</router-link>
+            </p>
+          </form>
         </div>
-
+      </div>
     </section>
   </div>
 </template>
 
 <script>
 import { ToastProgrammatic as Toast } from "buefy";
-import { Provider, Auth } from "@/modules/firebase"; 
+import { Provider, Auth, users } from "@/modules/firebase";
 export default {
   name: "Login",
   data() {
@@ -55,33 +61,46 @@ export default {
   },
 
   methods: {
-    async login(user){
-      if(this.validarDatos(user)){
-        try{
-          const response= await Auth.signInWithEmailAndPassword(user.email, user.password);
+    async login(user) {
+      if (this.validarDatos(user)) {
+        try {
+          const response = await Auth.signInWithEmailAndPassword(
+            user.email,
+            user.password
+          );
+          const userResponseEmail = users
+            .where("email", "==", response.user.email)
+            .get();
           const session = {
             token: response.user.Aa,
-            email: response.user.email
-          }
-          sessionStorage.setItem("session", JSON.stringify(session));
-          this.goToHome();
-        }
-        catch(error){
-          if(error.code=="auth/user-not-found"){
+            email: response.user.email,
+            name: "",
+            surname: "",
+            id: "",
+          };
+
+          userResponseEmail.then((snapshot) => {
+            snapshot.docs.map((item) => {
+              session.name = item.data().name;
+              session.surname = item.data().surname;
+              session.id = item.id;
+              sessionStorage.setItem("session", JSON.stringify(session));
+              this.goToHome();
+            });
+          });
+        } catch (error) {
+          if (error.code == "auth/user-not-found") {
             this.mostrarError("El usuario no existe.");
-          }
-          else if(error.code=="auth/wrong-password"){
+          } else if (error.code == "auth/wrong-password") {
             this.mostrarError("Contraseña incorrecta.");
-          }
-          else if(error.code=="auth/invalid-email"){
+          } else if (error.code == "auth/invalid-email") {
             this.mostrarError("El email debe estar bien formateado.");
           }
         }
-      };
-
+      }
     },
-    async loginGoogle(){
-      const response= await Auth.signInWithPopup(Provider);
+    async loginGoogle() {
+      const response = await Auth.signInWithPopup(Provider);
       console.log(response);
     },
     validarDatos(user) {
@@ -103,11 +122,9 @@ export default {
         type: "is-danger",
       });
     },
-  goToHome(){
-    this.$router.push({name: "Home"});
-  }
-
-    
+    goToHome() {
+      this.$router.push({ name: "Home" });
+    },
   },
 };
 </script>
@@ -150,7 +167,7 @@ export default {
   width: 180px;
   margin-top: 20px;
 }
-.customIcon{
+.customIcon {
   margin-right: 8px;
 }
 
@@ -201,11 +218,11 @@ export default {
 }
 
 @media (min-width: 1024px) {
-.container {
-  width: 700px;
-   border-radius: 6px;
-    box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);
+  .container {
+    width: 700px;
+    border-radius: 6px;
+    box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%),
+      0 0px 0 1px rgb(10 10 10 / 2%);
+  }
 }
-}
-
 </style>

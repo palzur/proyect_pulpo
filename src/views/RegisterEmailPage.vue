@@ -1,53 +1,53 @@
 <template>
   <div>
     <section class="container">
-        <p class="title">Registro con Email <i class="far fa-smile-wink"></i></p>
-        <div class="form">
-          <div class="panel-block">
-            <form>
-              <label name="nombre" class="text">Nombre</label>
-              <input
-                class="inputText"
-                type="text"
-                v-model="user.name"
-                maxlength="30"
-              />
-              <label name="apellidos" class="text">Apellidos</label>
-              <input
-                class="inputText"
-                type="text"
-                v-model="user.surname"
-                maxlength="30"
-              />
-              <label name="email" class="text">Email</label>
-              <input
-                class="inputText"
-                type="emial"
-                v-model="user.email"
-                maxlength="30"
-              />
-              <label name="password" class="text">Contraseña</label>
-              <input
-                class="inputText"
-                type="password"
-                v-model="user.password"
-                maxlength="30"
-              />
-              <label name="confirmPassword" class="text"
-                >Repite la contraseña</label
-              >
-              <input
-                class="inputText"
-                type="password"
-                v-model="user.confirmPassword"
-                maxlength="30"
-              />
-              <button class="btn3-1" @click.prevent="register(user)">
-                Registrarse
-              </button>
-            </form>
-          </div>
+      <p class="title">Registro con Email <i class="far fa-smile-wink"></i></p>
+      <div class="form">
+        <div class="panel-block">
+          <form>
+            <label name="nombre" class="text">Nombre</label>
+            <input
+              class="inputText"
+              type="text"
+              v-model="user.name"
+              maxlength="30"
+            />
+            <label name="apellidos" class="text">Apellidos</label>
+            <input
+              class="inputText"
+              type="text"
+              v-model="user.surname"
+              maxlength="30"
+            />
+            <label name="email" class="text">Email</label>
+            <input
+              class="inputText"
+              type="emial"
+              v-model="user.email"
+              maxlength="30"
+            />
+            <label name="password" class="text">Contraseña</label>
+            <input
+              class="inputText"
+              type="password"
+              v-model="user.password"
+              maxlength="30"
+            />
+            <label name="confirmPassword" class="text"
+              >Repite la contraseña</label
+            >
+            <input
+              class="inputText"
+              type="password"
+              v-model="user.confirmPassword"
+              maxlength="30"
+            />
+            <button class="btn3-1" @click.prevent="register(user)">
+              Registrarse
+            </button>
+          </form>
         </div>
+      </div>
     </section>
   </div>
 </template>
@@ -55,6 +55,7 @@
 <script>
 import { ToastProgrammatic as Toast } from "buefy";
 import { Auth } from "@/modules/firebase";
+import { users } from "@/modules/firebase";
 
 export default {
   name: "Create",
@@ -72,15 +73,22 @@ export default {
   methods: {
     async register(user) {
       if (this.validarDatos(user)) {
-        try{
+        try {
           const response = await Auth.createUserWithEmailAndPassword(
             user.email,
             user.password
           );
+          const userToSave = {
+            name: user.name,
+            surname: user.surname,
+            email: user.email,
+          };
+          response = await users.add(userToSave);
+
           this.mostrarInfo("¡Usuario creado correctamente!");
-        }catch(error){
-          if(error.code=="auth/email-already-in-use"){
-            this.mostrarError("El email ya está registrado.")
+        } catch (error) {
+          if (error.code == "auth/email-already-in-use") {
+            this.mostrarError("El email ya está registrado.");
           }
         }
       }
@@ -110,8 +118,8 @@ export default {
         this.mostrarError("Las contraseñas no coinciden.");
         return false;
       }
-      
-      if(user.password.length<6){
+
+      if (user.password.length < 6) {
         this.mostrarError("La contraseña debe de tener al menos 6 caracteres.");
         return false;
       }
@@ -125,14 +133,14 @@ export default {
         type: "is-danger",
       });
     },
-    mostrarInfo(mensaje){
+    mostrarInfo(mensaje) {
       Toast.open({
         duration: 5000,
         message: mensaje,
         position: "is-bottom",
         type: "is-success",
       });
-    }
+    },
   },
 };
 </script>
@@ -222,10 +230,11 @@ export default {
 }
 
 @media (min-width: 1024px) {
-.container {
-  width: 700px;
-   border-radius: 6px;
-    box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);
-}
+  .container {
+    width: 700px;
+    border-radius: 6px;
+    box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%),
+      0 0px 0 1px rgb(10 10 10 / 2%);
+  }
 }
 </style>
