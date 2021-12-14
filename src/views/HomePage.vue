@@ -41,11 +41,10 @@
         >
       </section>
 
-
-      <section class="cardMain">
       <section class="firstTittle" v-if="soyAdminGrupos()">
         <h1>Estos son tus grupos creados...</h1>
       </section>
+      <section class="cardMain">
         <template v-for="group in groups">
           <card-service
             v-if="session.email == group.admin.email"
@@ -183,8 +182,8 @@ export default {
   padding: 20px;
   line-height: 30px;
 }
-.firstTittle{
-font-family: Readex Pro, sans-serif;
+.firstTittle {
+  font-family: Readex Pro, sans-serif;
   font-weight: 700;
   font-size: 23px;
   padding: 20px;
