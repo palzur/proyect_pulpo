@@ -34,7 +34,9 @@
             <button class="btn btn-login" @click.prevent="login(user)">
               Login
             </button>
-            <router-link to="/change/password"><p class="text">¿Has olvidado tu contraseña?</p></router-link>
+            <router-link to="/change/password"
+              ><p class="text">¿Has olvidado tu contraseña?</p></router-link
+            >
             <p class="text text2">
               ¿Aún no tienes cuenta?
               <router-link to="/register">Regístrate</router-link>
@@ -101,7 +103,14 @@ export default {
     },
     async loginGoogle() {
       const response = await Auth.signInWithPopup(Provider);
-      console.log(response);
+      const session = {
+        token: response.user.Aa,
+        email: response.additionalUserInfo.profile.email,
+        name: response.additionalUserInfo.profile.given_name,
+        surname: response.additionalUserInfo.profile.family_name,
+      };
+      sessionStorage.setItem("session", JSON.stringify(session));
+      this.goToHome();
     },
     validarDatos(user) {
       if (user.email == "") {

@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div>
     <section class="container">
       <p class="title">Reestablecer contraseña</p>
       <div class="form">
@@ -12,23 +12,7 @@
               v-model="user.email"
               maxlength="30"
             />
-            <label name="password" class="text">Contraseña</label>
-            <input
-              class="inputText"
-              type="password"
-              v-model="user.password"
-              maxlength="30"
-            />
-            <label name="confirmPassword" class="text"
-              >Repite la contraseña</label
-            >
-            <input
-              class="inputText"
-              type="password"
-              v-model="user.confirmPassword"
-              maxlength="30"
-            />
-            <button class="btn3-1">
+            <button class="btn3-1" @click.prevent="changePassword(user.email)">
               Reestablecer
             </button>
           </form>
@@ -39,23 +23,53 @@
 </template>
 
   <script>
-  export default{
-    name:'ChangePassword',
-    data(){
-      return{
-        user: {
-          email: "",
-          password: "",
-          confirmPassword: ""
+import { Auth } from "@/modules/firebase";
+import { ToastProgrammatic as Toast } from "buefy";
+
+export default {
+  name: "ChangePassword",
+  data() {
+    return {
+      user: {
+        email: "",
+      },
+    };
+  },
+  methods: {
+    async changePassword(email) {
+      try {
+        const response = await Auth.sendPasswordResetEmail(email);
+        this.mostrarInfo("Mensaje enviado correctamente");
+      } catch (error) {
+        if (error.code == "auth/user-not-found") {
+          this.mostrarError("El usuario no existe.");
+        } else if (error.code == "auth/invalid-email") {
+          this.mostrarError("El email debe estar bien formateado.");
         }
       }
-    }
-  }
-
-  </script>
+    },
+    mostrarInfo(mensaje) {
+      Toast.open({
+        duration: 5000,
+        message: mensaje,
+        position: "is-bottom",
+        type: "is-success",
+      });
+    },
+    mostrarError(mensaje) {
+      Toast.open({
+        duration: 5000,
+        message: mensaje,
+        position: "is-bottom",
+        type: "is-danger",
+      });
+    },
+  },
+};
+</script>
   
   <style scoped>
-  .container {
+.container {
   width: 100%;
   margin-top: 60px;
   padding: 0px;
@@ -145,5 +159,4 @@
       0 0px 0 1px rgb(10 10 10 / 2%);
   }
 }
-
-  </style>
+</style>

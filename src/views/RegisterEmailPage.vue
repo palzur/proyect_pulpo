@@ -87,7 +87,6 @@ export default {
             surname: user.surname,
             email: user.email,
           };
-          console.log(response.user.uid);
           const responseTwo = await users.doc(response.user.uid).set(userToSave);
           this.mostrarInfo("¡Usuario creado correctamente!");
           sessionStorage.setItem("session",JSON.stringify(userToSave));

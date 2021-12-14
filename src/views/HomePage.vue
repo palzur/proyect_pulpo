@@ -30,7 +30,7 @@
 
     <main class="main">
       <section class="section">
-        <h1>Hola {{ session.name }}, estos son tus grupos creados...</h1>
+        <h1>Hola {{ session.name }}, ¿qué tal estás?</h1>
         <p>¿Quiéres unirte hoy a algo especial?</p>
         <p>¿¡Es tu momento!?</p>
         <p><i class="fas fa-search icon-search"></i></p>
@@ -41,7 +41,11 @@
         >
       </section>
 
+
       <section class="cardMain">
+      <section class="firstTittle" v-if="soyAdminGrupos()">
+        <h1>Estos son tus grupos creados...</h1>
+      </section>
         <template v-for="group in groups">
           <card-service
             v-if="session.email == group.admin.email"
@@ -117,6 +121,15 @@ export default {
         });
       });
     },
+    soyAdminGrupos() {
+      const email = this.session.email;
+      if (this.groups == null) {
+        return false;
+      }
+      return this.groups.some(function (group) {
+        return group.admin.email == email;
+      });
+    },
   },
 };
 </script>
@@ -166,9 +179,17 @@ export default {
 .section h1 {
   font-family: Readex Pro, sans-serif;
   font-weight: 700;
+  font-size: 25px;
+  padding: 20px;
+  line-height: 30px;
+}
+.firstTittle{
+font-family: Readex Pro, sans-serif;
+  font-weight: 700;
   font-size: 23px;
   padding: 20px;
   line-height: 30px;
+  margin: 10px;
 }
 
 .section p {

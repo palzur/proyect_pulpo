@@ -38,7 +38,7 @@
       </section>
       <section class="cardMain">
         <template v-for="group in groups">
-          <card-service v-if="pertenezcoGrupo(group)"
+          <card-service v-if="haySitioDisponible(group) && pertenezcoGrupo(group)"
             :join="true"
             :group="group"
             class="cardChild"
@@ -78,6 +78,9 @@ export default {
         return person.email == email;
       });
     },
+    haySitioDisponible(group){
+      return group.numberPerson - group.people.length > 0;
+    }
   },
 };
 </script>

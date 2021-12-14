@@ -1,39 +1,52 @@
 <template>
   <div>
     <section class="container">
-      
-        <p class="title">Regístrate</p>
-        <div>
-          <button class="btn btn-google">
-            <i class="customIcon fab fa-google"></i> Registro con Google
-          </button>
-        </div>
-        <div>
-          <button class="btn btn-facebook">
-            <i class="customIcon fab fa-facebook-f"></i> Registro con Facebook
-          </button>
-        </div>
-        <div>
-          <button class="btn btn-email" @click="goToRegisterEmail()">
-            <i class="customIcon far fa-envelope"></i> Registro con Email
-          </button>
-        </div>
-        <p class="text">
-          Al registrarme acepto los Términos y Condiciones de Pulpo
-        </p>
-
+      <p class="title">Regístrate</p>
+      <div>
+        <button class="btn btn-google" @click="registerGoogle()">
+          <i class="customIcon fab fa-google"></i> Registro con Google
+        </button>
+      </div>
+      <div>
+        <button class="btn btn-facebook">
+          <i class="customIcon fab fa-facebook-f"></i> Registro con Facebook
+        </button>
+      </div>
+      <div>
+        <button class="btn btn-email" @click="goToRegisterEmail()">
+          <i class="customIcon far fa-envelope"></i> Registro con Email
+        </button>
+      </div>
+      <p class="text">
+        Al registrarme acepto los Términos y Condiciones de Pulpo
+      </p>
     </section>
   </div>
 </template>
 
 <script>
-
-import { users } from "@/modules/firebase";
+import { Provider, Auth, users } from "@/modules/firebase";
 export default {
   name: "Register",
   methods: {
     goToRegisterEmail() {
       this.$router.push({ name: "RegisterEmail" });
+    },
+    async registerGoogle() {
+      const response = await Auth.signInWithPopup(Provider);
+      console.log(response);
+      const userToSave = {
+        token: response.user.Aa,
+        email: response.additionalUserInfo.profile.email,
+        name: response.additionalUserInfo.profile.given_name,
+        surname: response.additionalUserInfo.profile.family_name,
+      };
+      const responseTwo = await users.doc(response.user.uid).set(userToSave);
+      sessionStorage.setItem("session", JSON.stringify(userToSave));
+      this.paginaHome();
+    },
+    paginaHome() {
+      this.$router.push({ path: "/home" });
     },
   },
 };
@@ -107,7 +120,8 @@ export default {
   .container {
     width: 700px;
     border-radius: 6px;
-    box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);
+    box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%),
+      0 0px 0 1px rgb(10 10 10 / 2%);
   }
 }
 </style>

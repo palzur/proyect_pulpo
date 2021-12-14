@@ -60,7 +60,7 @@
 
       <section class="cardMain">
         <template v-for="group in groups">
-          <card-service :join="true" :group="group" class="cardChild" :key="group.id" />
+          <card-service :join="true" :group="group" class="cardChild" :key="group.id" v-if="haySitioDisponible(group)"/>
         </template>
       </section>
     </main>
@@ -85,6 +85,11 @@ export default {
     return {
       groups: [],
     };
+  },
+  methods:{
+    haySitioDisponible(group){
+      return group.numberPerson - group.people.length > 0;
+    }
   },
   firestore: {
     groups: groups,
