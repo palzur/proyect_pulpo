@@ -34,7 +34,6 @@ export default {
     },
     async registerGoogle() {
       const response = await Auth.signInWithPopup(Provider);
-      console.log(response);
       const userToSave = {
         token: response.user.Aa,
         email: response.additionalUserInfo.profile.email,

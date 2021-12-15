@@ -92,12 +92,12 @@ export default {
     //Implemento la funcionalidad para unirme al grupo
    async addGroup(){
       const user={
-        id:this.session.id,
+        id:this.session.id || "",
         name: this.session.name,
         surname: this.session.surname,
         email: this.session.email,
       }
-      // console.log(user);
+      console.log(user);
       this.group.people.push(user);
       // console.log(this.group)
 
